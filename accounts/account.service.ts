@@ -84,9 +84,21 @@ async function register(params: any, origin: any) {
 
     account.passwordHash = await hash(params.password);
 
+    // demo mode: set AUTO_VERIFY=true to skip email verification
+    if (process.env.AUTO_VERIFY === 'true') {
+        account.verified = Date.now();
+        account.verificationToken = null;
+        await account.save();
+        return;
+    }
+
     await account.save();
 
-    await sendVerificationEmail(account, origin);
+    try {
+        await sendVerificationEmail(account, origin);
+    } catch (err) {
+        console.error('Could not send verification email:', err);
+    }
 }
 
 async function verifyEmail({ token }: any) {

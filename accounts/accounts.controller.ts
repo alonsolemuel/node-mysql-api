@@ -221,8 +221,13 @@ function _delete(req: any, res: any, next: any) {
 }
 
 function setTokenCookie(res: any, token: any) {
-    const cookieOptions = {
+    // when deployed, the frontend is on a different domain, so the refresh
+    // token cookie must be sent cross-site (SameSite=None requires Secure)
+    const crossSite = !!process.env.VERCEL;
+    const cookieOptions: any = {
         httpOnly: true,
+        secure: crossSite,
+        sameSite: crossSite ? 'none' : 'lax',
         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
     };
     res.cookie('refreshToken', token, cookieOptions);
