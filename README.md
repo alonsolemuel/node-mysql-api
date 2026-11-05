@@ -42,7 +42,7 @@ All routes are under `/accounts`.
 **Requirements:** Node.js 18+, MySQL
 
 ```bash
-git clone https://github.com/Aya12234567/node-mysql-api.git
+git clone https://github.com/alonsolemuel/node-mysql-api.git
 cd node-mysql-api
 npm install
 ```
